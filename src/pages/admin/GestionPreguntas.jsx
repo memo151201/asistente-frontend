@@ -422,9 +422,9 @@ const GestionPreguntas = () => {
             <tbody>
               {preguntas.map((pregunta) => (
                 <tr key={pregunta.id}>
-                  <td style={{ maxWidth: '300px' }}>
-                    {pregunta.textoPregunta.substring(0, 60)}...
-                  </td>
+                      <td style={{ maxWidth: '300px' }}>
+                     {pregunta.textoPregunta ? pregunta.textoPregunta.substring(0, 60) + '...' : 'N/A'}
+                </td>
                   <td>{pregunta.subtema?.nombre || 'N/A'}</td>
                   <td>
                     <span className="badge badge-respuesta">

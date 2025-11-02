@@ -12,6 +12,14 @@ import TemaDetalle from './pages/TemaDetalle';
 import EstudiarSubtema from './pages/EstudiarSubtema';
 import Cuestionario from './pages/Cuestionario';
 import CuestionarioIA from './pages/CuestionarioIA';
+
+// ADMIN
+import AdminDashboard from './pages/admin/AdminDashboard';
+import GestionMaterias from './pages/admin/GestionMaterias';
+import GestionTemas from './pages/admin/GestionTemas';
+import GestionSubtemas from './pages/admin/GestionSubtemas';
+import GestionPreguntas from './pages/admin/GestionPreguntas';
+
 import './App.css';
 
 // Componente para rutas protegidas
@@ -42,6 +50,29 @@ const PublicRoute = ({ children }) => {
   }
 
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+};
+
+// Componente para rutas de ADMIN
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (user.rol !== 'ADMINISTRADOR') {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return children;
 };
 
 function AppContent() {
@@ -102,7 +133,7 @@ function AppContent() {
               } 
             />
 
-            {/* NUEVA: Ruta para estudiar un subtema (CON IA) */}
+            {/* Ruta para estudiar un subtema (CON IA) */}
             <Route 
               path="/estudiar/:subtemaId" 
               element={
@@ -122,13 +153,57 @@ function AppContent() {
               } 
             />
 
-            {/* NUEVA: Ruta para cuestionario generado con IA */}
+            {/* Ruta para cuestionario generado con IA */}
             <Route 
               path="/cuestionario-ia/:subtemaId" 
               element={
                 <PrivateRoute>
                   <CuestionarioIA />
                 </PrivateRoute>
+              } 
+            />
+
+            {/* ============================================ */}
+            {/* RUTAS DE ADMINISTRADOR */}
+            {/* ============================================ */}
+            <Route 
+              path="/admin" 
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/admin/materias" 
+              element={
+                <AdminRoute>
+                  <GestionMaterias />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/admin/temas" 
+              element={
+                <AdminRoute>
+                  <GestionTemas />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/admin/subtemas" 
+              element={
+                <AdminRoute>
+                  <GestionSubtemas />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/admin/preguntas" 
+              element={
+                <AdminRoute>
+                  <GestionPreguntas />
+                </AdminRoute>
               } 
             />
 

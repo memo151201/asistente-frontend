@@ -121,7 +121,61 @@ const apiService = {
   // ============================================
   getPerfil() {
     return api.get('/auth/me');
-  }
+  },
+  // Agregar al final del objeto apiService
+
+// ADMIN - Materias
+crearMateria(data) {
+  return api.post('/materias', data);
+},
+
+actualizarMateria(id, data) {
+  return api.put(`/materias/${id}`, data);
+},
+
+eliminarMateria(id) {
+  return api.delete(`/materias/${id}`);
+},
+
+// ADMIN - Temas
+crearTema(data) {
+  return api.post('/temas', data);
+},
+
+actualizarTema(id, data) {
+  return api.put(`/temas/${id}`, data);
+},
+
+eliminarTema(id) {
+  return api.delete(`/temas/${id}`);
+},
+
+// ADMIN - Subtemas
+crearSubtema(data) {
+  return api.post('/subtemas', data);
+},
+
+actualizarSubtema(id, data) {
+  return api.put(`/subtemas/${id}`, data);
+},
+
+eliminarSubtema(id) {
+  return api.delete(`/subtemas/${id}`);
+},
+
+// ADMIN - Preguntas
+crearPregunta(data) {
+  return api.post('/preguntas', data);
+},
+
+actualizarPregunta(id, data) {
+  return api.put(`/preguntas/${id}`, data);
+},
+
+eliminarPregunta(id) {
+  return api.delete(`/preguntas/${id}`);
+},
 };
+
 
 export default apiService;

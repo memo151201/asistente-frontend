@@ -1,5 +1,3 @@
-// src/components/layout/Navbar.jsx
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
@@ -33,6 +31,16 @@ const Navbar = () => {
                   Materias
                 </Link>
               </li>
+              
+              {/* ENLACE AL PANEL DE ADMIN - Solo si es ADMINISTRADOR */}
+              {user?.rol === 'ADMINISTRADOR' && (
+                <li className="navbar-item">
+                  <Link to="/admin" className="navbar-link admin-link">
+                    👨‍💼 Panel Admin
+                  </Link>
+                </li>
+              )}
+              
               <li className="navbar-item">
                 <Link to="/profile" className="navbar-link">
                   Mi Perfil

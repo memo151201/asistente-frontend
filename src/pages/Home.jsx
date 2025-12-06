@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import './Pages.css';
 
 const Home = () => {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <div className="home-container">
@@ -39,9 +39,15 @@ const Home = () => {
 
         <div className="hero-cta">
           {isAuthenticated ? (
-            <Link to="/dashboard" className="cta-button">
-              Ir al Dashboard
-            </Link>
+            user?.rol === 'ADMINISTRADOR' ? (
+              <Link to="/admin" className="cta-button">
+                Ir al Panel de Administración
+              </Link>
+            ) : (
+              <Link to="/dashboard" className="cta-button">
+                Ir al Dashboard
+              </Link>
+            )
           ) : (
             <>
               <Link to="/register" className="cta-button">
@@ -55,34 +61,47 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="info-section">
-        <h2>¿Cómo funciona?</h2>
-        <div className="steps">
-          <div className="step">
-            <div className="step-number">1</div>
-            <h3>Regístrate</h3>
-            <p>Crea tu cuenta de estudiante o profesor</p>
-          </div>
+      {/* Sección para ESTUDIANTES o visitantes */}
+      {user?.rol !== 'ADMINISTRADOR' && (
+        <div className="info-section">
+          <h2>¿Cómo funciona?</h2>
+          <div className="steps">
+            <div className="step">
+              <div className="step-number">1</div>
+              <h3>Regístrate</h3>
+              <p>Crea tu cuenta de estudiante</p>
+            </div>
 
-          <div className="step">
-            <div className="step-number">2</div>
-            <h3>Elige una Materia</h3>
-            <p>Selecciona el tema que quieres aprender</p>
-          </div>
+            <div className="step">
+              <div className="step-number">2</div>
+              <h3>Elige una Materia</h3>
+              <p>Selecciona el tema que quieres aprender</p>
+            </div>
 
-          <div className="step">
-            <div className="step-number">3</div>
-            <h3>Practica</h3>
-            <p>Resuelve ejercicios y recibe retroalimentación</p>
-          </div>
+            <div className="step">
+              <div className="step-number">3</div>
+              <h3>Practica</h3>
+              <p>Resuelve ejercicios y recibe retroalimentación de IA</p>
+            </div>
 
-          <div className="step">
-            <div className="step-number">4</div>
-            <h3>Mejora</h3>
-            <p>Analiza tus resultados y sigue aprendiendo</p>
+            <div className="step">
+              <div className="step-number">4</div>
+              <h3>Mejora</h3>
+              <p>Analiza tus resultados y sigue aprendiendo</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Mensaje de bienvenida para ADMINISTRADORES */}
+      {user?.rol === 'ADMINISTRADOR' && (
+        <div className="info-section">
+          <div className="admin-welcome">
+            <h2>👋 Bienvenido, Administrador</h2>
+            <p>Accede al panel de administración para gestionar el sistema educativo</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

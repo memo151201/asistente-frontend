@@ -6,6 +6,7 @@ import authService from './authService';
 const API_URL = import.meta.env.VITE_API_URL 
   ? `${import.meta.env.VITE_API_URL}/api` 
   : 'http://localhost:8080/api';
+
 // Crear instancia de axios
 const api = axios.create({
   baseURL: API_URL,
@@ -56,6 +57,18 @@ const apiService = {
     return api.get(`/materias/${id}`);
   },
 
+  crearMateria(data) {
+    return api.post('/materias', data);
+  },
+
+  actualizarMateria(id, data) {
+    return api.put(`/materias/${id}`, data);
+  },
+
+  eliminarMateria(id) {
+    return api.delete(`/materias/${id}`);
+  },
+
   // ============================================
   // TEMAS
   // ============================================
@@ -67,6 +80,18 @@ const apiService = {
     return api.get(`/temas/materia/${materiaId}`);
   },
 
+  crearTema(data) {
+    return api.post('/temas', data);
+  },
+
+  actualizarTema(id, data) {
+    return api.put(`/temas/${id}`, data);
+  },
+
+  eliminarTema(id) {
+    return api.delete(`/temas/${id}`);
+  },
+
   // ============================================
   // SUBTEMAS
   // ============================================
@@ -76,6 +101,68 @@ const apiService = {
 
   getSubtemasByTema(temaId) {
     return api.get(`/subtemas/tema/${temaId}`);
+  },
+
+  crearSubtema(data) {
+    return api.post('/subtemas', data);
+  },
+
+  actualizarSubtema(id, data) {
+    return api.put(`/subtemas/${id}`, data);
+  },
+
+  eliminarSubtema(id) {
+    return api.delete(`/subtemas/${id}`);
+  },
+
+  // ============================================
+  // CONTENIDOS
+  // ============================================
+  getContenidos() {
+    return api.get('/contenidos');
+  },
+
+  getContenidosBySubtema(subtemaId) {
+    return api.get(`/contenidos/subtema/${subtemaId}`);
+  },
+
+  crearContenido(data) {
+    return api.post('/contenidos', data);
+  },
+
+  actualizarContenido(id, data) {
+    return api.put(`/contenidos/${id}`, data);
+  },
+
+  eliminarContenido(id) {
+    return api.delete(`/contenidos/${id}`);
+  },
+
+  // ============================================
+  // EJERCICIOS
+  // ============================================
+  getEjercicios() {
+    return api.get('/ejercicios');
+  },
+
+  getEjerciciosBySubtema(subtemaId) {
+    return api.get(`/ejercicios/subtema/${subtemaId}`);
+  },
+
+  getEjercicioById(id) {
+    return api.get(`/ejercicios/${id}`);
+  },
+
+  crearEjercicio(data) {
+    return api.post('/ejercicios', data);
+  },
+
+  actualizarEjercicio(id, data) {
+    return api.put(`/ejercicios/${id}`, data);
+  },
+
+  eliminarEjercicio(id) {
+    return api.delete(`/ejercicios/${id}`);
   },
 
   // ============================================
@@ -95,6 +182,18 @@ const apiService = {
 
   verificarRespuesta(preguntaId, respuesta) {
     return api.post(`/preguntas/${preguntaId}/verificar`, { respuesta });
+  },
+
+  crearPregunta(data) {
+    return api.post('/preguntas', data);
+  },
+
+  actualizarPregunta(id, data) {
+    return api.put(`/preguntas/${id}`, data);
+  },
+
+  eliminarPregunta(id) {
+    return api.delete(`/preguntas/${id}`);
   },
 
   // ============================================
@@ -117,65 +216,41 @@ const apiService = {
   },
 
   // ============================================
+  // USUARIOS
+  // ============================================
+  getUsuarios() {
+    return api.get('/usuarios');
+  },
+
+  crearUsuario(data) {
+    return api.post('/auth/register', data);
+  },
+
+  eliminarUsuario(id) {
+    return api.delete(`/usuarios/${id}`);
+  },
+
+  // ============================================
   // PERFIL
   // ============================================
   getPerfil() {
     return api.get('/auth/me');
   },
-  // Agregar al final del objeto apiService
 
-// ADMIN - Materias
-crearMateria(data) {
-  return api.post('/materias', data);
-},
+  // ============================================
+  // INTELIGENCIA ARTIFICIAL
+  // ============================================
+  generarPreguntasIA(subtemaId) {
+    return api.post(`/ia/generar-preguntas/${subtemaId}`);
+  },
 
-actualizarMateria(id, data) {
-  return api.put(`/materias/${id}`, data);
-},
+  explicarContenidoIA(subtemaId) {
+    return api.post(`/ia/explicar/${subtemaId}`);
+  },
 
-eliminarMateria(id) {
-  return api.delete(`/materias/${id}`);
-},
-
-// ADMIN - Temas
-crearTema(data) {
-  return api.post('/temas', data);
-},
-
-actualizarTema(id, data) {
-  return api.put(`/temas/${id}`, data);
-},
-
-eliminarTema(id) {
-  return api.delete(`/temas/${id}`);
-},
-
-// ADMIN - Subtemas
-crearSubtema(data) {
-  return api.post('/subtemas', data);
-},
-
-actualizarSubtema(id, data) {
-  return api.put(`/subtemas/${id}`, data);
-},
-
-eliminarSubtema(id) {
-  return api.delete(`/subtemas/${id}`);
-},
-
-// ADMIN - Preguntas
-crearPregunta(data) {
-  return api.post('/preguntas', data);
-},
-
-actualizarPregunta(id, data) {
-  return api.put(`/preguntas/${id}`, data);
-},
-
-eliminarPregunta(id) {
-  return api.delete(`/preguntas/${id}`);
-},
+  generarEjemplosIA(subtemaId) {
+    return api.post(`/ia/ejemplos/${subtemaId}`);
+  },
 };
-
 
 export default apiService;

@@ -14,12 +14,13 @@ import Cuestionario from './pages/Cuestionario';
 import CuestionarioIA from './pages/CuestionarioIA';
 
 // ADMIN
+import PerfilAdmin from './pages/admin/PerfilAdmin';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import GestionMaterias from './pages/admin/GestionMaterias';
-import GestionTemas from './pages/admin/GestionTemas';
-import GestionSubtemas from './pages/admin/GestionSubtemas';
+import GestionJerarquica from './pages/admin/GestionJerarquica';
 import GestionPreguntas from './pages/admin/GestionPreguntas';
-
+import GestionContenidos from './pages/admin/GestionContenidos';
+import GestionEjercicios from './pages/admin/GestionEjercicios';
+import GestionUsuarios from './pages/admin/GestionUsuarios';
 import './App.css';
 
 // Componente para rutas protegidas
@@ -103,7 +104,9 @@ function AppContent() {
               } 
             />
 
-            {/* Rutas protegidas */}
+            {/* ============================================ */}
+            {/* RUTAS PROTEGIDAS - USUARIOS NORMALES */}
+            {/* ============================================ */}
             <Route 
               path="/dashboard" 
               element={
@@ -133,7 +136,7 @@ function AppContent() {
               } 
             />
 
-            {/* Ruta para estudiar un subtema (CON IA) */}
+            {/* Ruta para estudiar un subtema */}
             <Route 
               path="/estudiar/:subtemaId" 
               element={
@@ -143,7 +146,7 @@ function AppContent() {
               } 
             />
 
-            {/* Ruta para el cuestionario normal de un subtema */}
+            {/* Ruta para el cuestionario normal */}
             <Route 
               path="/cuestionario/:subtemaId" 
               element={
@@ -153,7 +156,7 @@ function AppContent() {
               } 
             />
 
-            {/* Ruta para cuestionario generado con IA */}
+            {/* Ruta para cuestionario con IA */}
             <Route 
               path="/cuestionario-ia/:subtemaId" 
               element={
@@ -174,35 +177,63 @@ function AppContent() {
                 </AdminRoute>
               } 
             />
+            
+            {/* ✅ PERFIL DE ADMINISTRADOR */}
             <Route 
-              path="/admin/materias" 
+              path="/admin/perfil" 
               element={
                 <AdminRoute>
-                  <GestionMaterias />
+                  <PerfilAdmin />
                 </AdminRoute>
               } 
             />
+            
+            {/* GESTIÓN JERÁRQUICA */}
             <Route 
-              path="/admin/temas" 
+              path="/admin/jerarquia" 
               element={
                 <AdminRoute>
-                  <GestionTemas />
+                  <GestionJerarquica />
                 </AdminRoute>
               } 
             />
+            
+            {/* GESTIÓN DE CONTENIDOS */}
             <Route 
-              path="/admin/subtemas" 
+              path="/admin/contenidos" 
               element={
                 <AdminRoute>
-                  <GestionSubtemas />
+                  <GestionContenidos />
                 </AdminRoute>
               } 
             />
+            
+            {/* GESTIÓN DE EJERCICIOS */}
+            <Route 
+              path="/admin/ejercicios" 
+              element={
+                <AdminRoute>
+                  <GestionEjercicios />
+                </AdminRoute>
+              } 
+            />
+            
+            {/* GESTIÓN DE PREGUNTAS */}
             <Route 
               path="/admin/preguntas" 
               element={
                 <AdminRoute>
                   <GestionPreguntas />
+                </AdminRoute>
+              } 
+            />
+            
+            {/* GESTIÓN DE USUARIOS */}
+            <Route 
+              path="/admin/usuarios" 
+              element={
+                <AdminRoute>
+                  <GestionUsuarios />
                 </AdminRoute>
               } 
             />

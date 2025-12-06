@@ -129,7 +129,7 @@ const handleEstudiar = (subtemaId) => {
                         onClick={() => handleEstudiar(subtema.id)}
                         className="btn-cuestionario"
                       >
-                  🎯 Empezar Cuestionario
+                    Ver Contenido
                 </button>
               </div>
             ))}

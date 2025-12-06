@@ -1,9 +1,11 @@
 /* src/pages/admin/Admin.css */
 
 .admin-dashboard {
-  max-width: 1200px;
+    width: 100%;
+  max-width: 95vw;
   margin: 0 auto;
   padding: 20px;
+ box-sizing: border-box;
 }
 
 .admin-dashboard h1 {
@@ -14,7 +16,7 @@
 
 .admin-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-top: 30px;
 }
@@ -42,9 +44,11 @@
 
 /* Gestión */
 .gestion-container {
-  max-width: 1400px;
+  width: 100%;
+ max-width: 95vw;
   margin: 0 auto;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .gestion-header {
@@ -230,4 +234,379 @@ table th {
 
 .btn-eliminar:hover {
   background: #dc2626;
+}
+/* Contenidos */
+.contenidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contenido-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.contenido-numero {
+  background: #4f46e5;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.contenido-tipo {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tipo-texto {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.tipo-codigo {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.tipo-imagen {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.tipo-video {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.contenido-cuerpo.codigo pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.contenido-cuerpo img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+/* Badges */
+.badge-recomendado {
+  background: #10b981;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-avanzado {
+  background: #8b5cf6;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.opcion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.opcion-caracteristicas {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.opcion-caracteristicas li {
+  padding: 8px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  background: #f9fafb;
+}
+@media (max-width: 1024px) {
+  .admin-dashboard,
+  .gestion-container {
+    padding: 15px;
+  }
+
+  .admin-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .gestion-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+/* Agregar estos estilos al final de tu archivo Admin.css existente */
+
+/* ============================================ */
+/* ESTILOS PARA EJERCICIOS */
+/* ============================================ */
+
+/* Selector de subtema */
+.filtro-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtro-container label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.select-filtro {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-filtro:hover {
+  border-color: #4A90E2;
+}
+
+.select-filtro:focus {
+  outline: none;
+  border-color: #4A90E2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* Formulario de dos columnas */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Info del subtema en formulario */
+.form-info {
+  background: #e8f4f8;
+  border-left: 4px solid #4A90E2;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.form-info strong {
+  color: #2c3e50;
+}
+
+/* Enunciado en la tabla */
+.ejercicio-enunciado {
+  max-width: 400px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+/* Badges para tipo de ejercicio */
+.badge-tipo-practica {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badge-tipo-teoria {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.badge-tipo-evaluacion {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.badge-tipo-desafio {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin: 10px 0;
+}
+
+.empty-subtitle {
+  font-size: 1rem;
+  color: #95a5a6;
+}
+
+/* Responsive para formulario */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .ejercicio-enunciado {
+    max-width: 100%;
+  }
+}
+/* Agregar estos estilos al final de tu archivo Admin.css existente */
+
+/* ============================================ */
+/* ESTILOS PARA EJERCICIOS */
+/* ============================================ */
+
+/* Selector de subtema */
+.filtro-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtro-container label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.select-filtro {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-filtro:hover {
+  border-color: #4A90E2;
+}
+
+.select-filtro:focus {
+  outline: none;
+  border-color: #4A90E2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* Formulario de dos columnas */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Info del subtema en formulario */
+.form-info {
+  background: #e8f4f8;
+  border-left: 4px solid #4A90E2;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.form-info strong {
+  color: #2c3e50;
+}
+
+/* Enunciado en la tabla */
+.ejercicio-enunciado {
+  max-width: 400px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+/* Badges para tipo de ejercicio */
+.badge-tipo-codigo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badge-tipo-problema {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.badge-tipo-texto_libre {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.badge-tipo-analisis {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.badge-tipo-sql {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin: 10px 0;
+}
+
+.empty-subtitle {
+  font-size: 1rem;
+  color: #95a5a6;
+}
+
+/* Responsive para formulario */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .ejercicio-enunciado {
+    max-width: 100%;
+  }
 }

@@ -2,23 +2,20 @@
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import authService from '../../services/authService';
 import './Auth.css';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    rol: 'ESTUDIANTE'
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const { register } = useAuth();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -32,6 +29,11 @@ const Register = () => {
     setError('');
 
     // Validaciones
+    if (!formData.nombre || !formData.apellido || !formData.email || !formData.password) {
+      setError('Por favor completa todos los campos');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
@@ -42,15 +44,24 @@ const Register = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const { confirmPassword, ...userData } = formData;
-      await register(userData);
+      setLoading(true);
+
+      // ✅ SIEMPRE registrar como ESTUDIANTE
+      const userData = {
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        email: formData.email,
+        password: formData.password,
+        rol: 'ESTUDIANTE' // ✅ FORZADO
+      };
+
+      await authService.register(userData);
+      
+      // Redirigir al dashboard
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Error al registrar usuario');
-    } finally {
       setLoading(false);
     }
   };
@@ -59,110 +70,82 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Crear Cuenta</h2>
-        <p className="auth-subtitle">Asistente de Aprendizaje con IA</p>
+        <p className="auth-subtitle">Regístrate como estudiante</p>
 
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="nombre">Nombre:</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                required
-                placeholder="Juan"
-                disabled={loading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="apellido">Apellido:</label>
-              <input
-                type="text"
-                id="apellido"
-                name="apellido"
-                value={formData.apellido}
-                onChange={handleChange}
-                required
-                placeholder="Pérez"
-                disabled={loading}
-              />
-            </div>
-          </div>
-
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
+            <label>Nombre</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              name="nombre"
+              value={formData.nombre}
               onChange={handleChange}
+              placeholder="Ingresa tu nombre"
               required
-              placeholder="tu@email.com"
-              disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="rol">Tipo de usuario:</label>
-            <select
-              id="rol"
-              name="rol"
-              value={formData.rol}
+            <label>Apellido</label>
+            <input
+              type="text"
+              name="apellido"
+              value={formData.apellido}
               onChange={handleChange}
-              disabled={loading}
-            >
-              <option value="ESTUDIANTE">Estudiante</option>
-              <option value="PROFESOR">Profesor</option>
-            </select>
+              placeholder="Ingresa tu apellido"
+              required
+            />
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="password">Contraseña:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                placeholder="••••••••"
-                disabled={loading}
-              />
-            </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="tu@email.com"
+              required
+            />
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirmar:</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                placeholder="••••••••"
-                disabled={loading}
-              />
-            </div>
+          <div className="form-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Mínimo 6 caracteres"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Confirmar Contraseña</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Repite tu contraseña"
+              required
+            />
           </div>
 
           <button 
             type="submit" 
-            className="btn-primary"
+            className="btn-primary btn-block"
             disabled={loading}
           >
             {loading ? 'Registrando...' : 'Crear Cuenta'}
           </button>
         </form>
 
-        <p className="auth-link">
-          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión aquí</Link>
+        <p className="auth-footer">
+          ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
         </p>
       </div>
     </div>

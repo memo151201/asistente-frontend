@@ -1,0 +1,633 @@
+/* src/pages/admin/GestionJerarquica.css */
+
+.gestion-jerarquica {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* ============== HEADER ============== */
+.header-jerarquica {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.header-jerarquica h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.header-jerarquica p {
+  margin: 5px 0 0 0;
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.btn-nueva-materia {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-nueva-materia:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ============== LOADING ============== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============== FORMULARIO TARJETA ============== */
+.form-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+  overflow: hidden;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.form-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.btn-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.btn-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.form-body {
+  padding: 25px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e8ed;
+}
+
+.btn-cancelar,
+.btn-guardar {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cancelar {
+  background: #ecf0f1;
+  color: #7f8c8d;
+}
+
+.btn-cancelar:hover {
+  background: #d5dbdb;
+}
+
+.btn-guardar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-guardar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+/* ============== ÁRBOL ============== */
+.arbol-container {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-crear-primera {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-crear-primera:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ============== NODOS ============== */
+.nodo-materia {
+  margin-bottom: 20px;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+  background: white;
+}
+
+.nodo-materia:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.nodo-tema,
+.nodo-subtema {
+  margin: 10px 0;
+  border-left: 3px solid #667eea;
+  border-radius: 8px;
+  background: #f8f9fa;
+  transition: all 0.3s;
+}
+
+.nodo-tema:hover,
+.nodo-subtema:hover {
+  background: #e8eaf6;
+  border-left-color: #764ba2;
+}
+
+.nodo-hijos {
+  padding: 15px 15px 15px 40px;
+  animation: expandHeight 0.3s ease;
+}
+
+@keyframes expandHeight {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+
+/* ============== HEADERS DE ITEMS ============== */
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  transition: all 0.2s;
+}
+
+.materia-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.tema-header {
+  background: #f8f9fa;
+}
+
+.subtema-header {
+  background: white;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.btn-expand {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px;
+  color: #667eea;
+  transition: transform 0.3s;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.btn-expand:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.icono {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-content h3,
+.item-content h4,
+.item-content h5 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+}
+
+.item-content h3 {
+  font-size: 20px;
+}
+
+.item-content h4 {
+  font-size: 18px;
+}
+
+.item-content h5 {
+  font-size: 16px;
+}
+
+.item-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font-size: 13px;
+  color: #7f8c8d;
+}
+
+.codigo {
+  background: #667eea;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.contador {
+  background: #e1e8ed;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.orden {
+  font-weight: 600;
+  color: #667eea;
+}
+
+/* ============== BADGES ============== */
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-facil {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badge-medio {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-dificil {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ============== ACCIONES ============== */
+.item-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-action {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.btn-add {
+  background: #d4edda;
+  color: #155724;
+}
+
+.btn-add:hover {
+  background: #c3e6cb;
+  transform: translateY(-1px);
+}
+
+.btn-edit {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.btn-edit:hover {
+  background: #ffeaa7;
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.btn-delete:hover {
+  background: #f5c6cb;
+  transform: translateY(-1px);
+}
+
+/* ============== FORMULARIOS INLINE ============== */
+.form-inline {
+  padding: 15px 20px;
+  background: #f1f3f5;
+  border-top: 2px dashed #dee2e6;
+  animation: slideDown 0.3s ease;
+}
+
+.form-inline .form-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-inline input,
+.form-inline select {
+  padding: 10px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+  flex: 1;
+}
+
+.form-inline input:focus,
+.form-inline select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-actions-inline {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-cancelar-inline,
+.btn-guardar-inline {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar-inline {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-cancelar-inline:hover {
+  background: #c0392b;
+}
+
+.btn-guardar-inline {
+  background: #2ecc71;
+  color: white;
+}
+
+.btn-guardar-inline:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
+}
+
+.form-tema {
+  border-left: 4px solid #667eea;
+}
+
+.form-subtema {
+  border-left: 4px solid #764ba2;
+}
+
+/* ============== NODO VACÍO ============== */
+.empty-node {
+  padding: 20px;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 768px) {
+  .gestion-jerarquica {
+    padding: 15px;
+  }
+
+  .header-jerarquica {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .header-jerarquica h1 {
+    font-size: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nodo-hijos {
+    padding-left: 20px;
+  }
+
+  .form-inline .form-row {
+    flex-direction: column;
+  }
+
+  .form-actions-inline {
+    width: 100%;
+  }
+}
+
+/* ============== ANIMACIONES HOVER ============== */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.btn-action:active {
+  transform: scale(0.95);
+}
+
+.btn-nueva-materia:active,
+.btn-guardar:active,
+.btn-crear-primera:active {
+  transform: translateY(0);
+}

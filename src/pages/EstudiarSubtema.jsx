@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiService from '../services/apiService';
 import './Pages.css';
-
-const API_URL = import.meta.env.VITE_API_URL 
-  ? `${import.meta.env.VITE_API_URL}/api` 
-  : 'http://localhost:8080/api';
 
 const EstudiarSubtema = () => {
   const { subtemaId } = useParams();
@@ -15,29 +11,27 @@ const EstudiarSubtema = () => {
 
   // Estados
   const [subtema, setSubtema] = useState(null);
+  const [contenidos, setContenidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Estados para IA
-  const [explicacionIA, setExplicacionIA] = useState('');
-  const [ejemplosIA, setEjemplosIA] = useState('');
-  const [loadingExplicacion, setLoadingExplicacion] = useState(false);
-  const [loadingEjemplos, setLoadingEjemplos] = useState(false);
 
   useEffect(() => {
-    fetchSubtema();
+    fetchSubtemaYContenidos();
   }, [subtemaId]);
 
-  const fetchSubtema = async () => {
+  const fetchSubtemaYContenidos = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
 
-      const response = await axios.get(`${API_URL}/subtemas/${subtemaId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      setSubtema(response.data);
+      // Obtener subtema
+      const subtemaResponse = await apiService.getSubtemas();
+      const subtemaEncontrado = subtemaResponse.data.find(s => s.id === parseInt(subtemaId));
+      setSubtema(subtemaEncontrado);
+
+      // Obtener contenidos del subtema
+      const contenidosResponse = await apiService.getContenidosBySubtema(subtemaId);
+      setContenidos(contenidosResponse.data);
+
       setLoading(false);
     } catch (err) {
       console.error('Error al cargar subtema:', err);
@@ -46,58 +40,16 @@ const EstudiarSubtema = () => {
     }
   };
 
-  const handleExplicarConIA = async () => {
-    try {
-      setLoadingExplicacion(true);
-      const token = localStorage.getItem('token');
-
-      console.log('🤖 Solicitando explicación a la IA...');
-
-      const response = await axios.post(
-        `${API_URL}/ia/explicar/${subtemaId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` }}
-      );
-
-      setExplicacionIA(response.data.explicacion);
-      console.log('✅ Explicación recibida');
-      setLoadingExplicacion(false);
-    } catch (err) {
-      console.error('Error al obtener explicación:', err);
-      alert('Error al generar explicación. Intenta de nuevo.');
-      setLoadingExplicacion(false);
-    }
-  };
-
-  const handleGenerarEjemplos = async () => {
-    try {
-      setLoadingEjemplos(true);
-      const token = localStorage.getItem('token');
-
-      console.log('🤖 Solicitando ejemplos a la IA...');
-
-      const response = await axios.post(
-        `${API_URL}/ia/ejemplos/${subtemaId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` }}
-      );
-
-      setEjemplosIA(response.data.ejemplos);
-      console.log('✅ Ejemplos recibidos');
-      setLoadingEjemplos(false);
-    } catch (err) {
-      console.error('Error al obtener ejemplos:', err);
-      alert('Error al generar ejemplos. Intenta de nuevo.');
-      setLoadingEjemplos(false);
-    }
+  const handleCuestionarioNormal = () => {
+    navigate(`/cuestionario/${subtemaId}`);
   };
 
   const handleCuestionarioIA = () => {
+    if (contenidos.length === 0) {
+      alert('No hay contenidos disponibles. El administrador debe agregar contenidos primero.');
+      return;
+    }
     navigate(`/cuestionario-ia/${subtemaId}`);
-  };
-
-  const handleCuestionarioNormal = () => {
-    navigate(`/cuestionario/${subtemaId}`);
   };
 
   const handleVolver = () => {
@@ -108,6 +60,35 @@ const EstudiarSubtema = () => {
     }
   };
 
+  const handleGenerarYResolver = async () => {
+  if (contenidos.length === 0) {
+    alert('No hay contenidos disponibles para generar preguntas.');
+    return;
+  }
+
+  if (!window.confirm('¿Generar 5 preguntas con IA basadas en este contenido? Esto puede tardar ~10 segundos.')) {
+    return;
+  }
+
+  try {
+    setLoading(true);
+    
+    console.log('🤖 Generando preguntas con IA para subtema:', subtemaId);
+    
+    // Llamar al endpoint que genera y guarda las preguntas
+    const response = await apiService.generarPreguntasIA(subtemaId);
+    
+    console.log('✅ Preguntas generadas:', response.data);
+    
+    // Redirigir al cuestionario
+    navigate(`/cuestionario/${subtemaId}`);
+    
+  } catch (error) {
+    console.error('❌ Error al generar preguntas:', error);
+    alert('Error al generar preguntas con IA. Por favor intenta de nuevo.');
+    setLoading(false);
+  }
+};
   // Loading
   if (loading) {
     return (
@@ -142,101 +123,82 @@ const EstudiarSubtema = () => {
           {subtema.tema && (
             <p className="estudiar-tema">Tema: {subtema.tema.nombre}</p>
           )}
+          {subtema.descripcion && (
+            <p className="estudiar-descripcion">{subtema.descripcion}</p>
+          )}
         </div>
       </div>
 
-      {/* Contenido Principal */}
-      <div className="estudiar-content">
-        
-        {/* Contenido Original de la BD */}
-        <div className="contenido-card">
-          <h2>📖 Contenido del Tema</h2>
-          <div className="contenido-texto">
-            <p>{subtema.descripcion}</p>
-            {subtema.contenido && (
-              <div className="contenido-detalle">
-                <p>{subtema.contenido}</p>
-              </div>
-            )}
-          </div>
-        </div>
+                {/* Contenido Principal */}
+                <div className="estudiar-content">
+                  
+                  {/* Mostrar Contenidos de la BD */}
+                  {contenidos.length > 0 ? (
+                    <div className="contenidos-lista">
+                      <h2>📖 Contenido del Tema</h2>
+                      {contenidos.map((contenido, index) => (
+                        <div key={contenido.id} className="contenido-card">
+                          <div className="contenido-header">
+                            <span className="contenido-numero">{index + 1}</span>
+                            <h3>{contenido.titulo}</h3>
+                            <span className={`contenido-tipo tipo-${contenido.tipo.toLowerCase()}`}>
+                              {contenido.tipo}
+                            </span>
+                          </div>
+                          <div className={`contenido-cuerpo ${contenido.tipo === 'CODIGO' ? 'codigo' : ''}`}>
+                            {contenido.tipo === 'CODIGO' ? (
+                              <pre><code>{contenido.cuerpo}</code></pre>
+                            ) : contenido.tipo === 'IMAGEN' ? (
+                              <img src={contenido.url || contenido.cuerpo} alt={contenido.titulo} />
+                            ) : contenido.tipo === 'VIDEO' ? (
+                              <iframe 
+                                src={contenido.url || contenido.cuerpo} 
+                                title={contenido.titulo}
+                                width="100%"
+                                height="400"
+                                frameBorder="0"
+                                allowFullScreen
+                              ></iframe>
+                            ) : (
+                              <p style={{ whiteSpace: 'pre-line' }}>{contenido.cuerpo}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="contenido-card empty">
+                      <p>😔 Este subtema aún no tiene contenidos.</p>
+                      <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                        El administrador debe agregar contenidos desde el panel de administración.
+                      </p>
+                    </div>
+                  )}
 
-        {/* Botón Explicar con IA */}
-        <div className="ia-actions">
-          <button 
-            onClick={handleExplicarConIA}
-            className="btn-ia explicar"
-            disabled={loadingExplicacion}
-          >
-            {loadingExplicacion ? (
-              <>⏳ Generando explicación...</>
+         <div className="cuestionario-section">
+            <h2>🎯 Pon a Prueba lo Aprendido</h2>
+            
+            {contenidos.length > 0 ? (
+              <>
+                <p>Genera un cuestionario personalizado basado en este contenido</p>
+                
+                <button 
+                  onClick={handleGenerarYResolver}
+                  className="btn-cuestionario-ia"
+                >
+                  🤖 Generar Cuestionario con IA
+                </button>
+                
+                <p className="nota-ia">
+                  ⏳ La IA generará 5 preguntas únicas basadas en el contenido (~10 segundos)
+                </p>
+              </>
             ) : (
-              <>🤖 Explicar con IA</>
+              <p className="advertencia">
+                ⚠️ Este subtema aún no tiene contenidos
+              </p>
             )}
-          </button>
-
-          <button 
-            onClick={handleGenerarEjemplos}
-            className="btn-ia ejemplos"
-            disabled={loadingEjemplos}
-          >
-            {loadingEjemplos ? (
-              <>⏳ Generando ejemplos...</>
-            ) : (
-              <>💡 Ver Ejemplos con IA</>
-            )}
-          </button>
-        </div>
-
-        {/* Explicación IA */}
-        {explicacionIA && (
-          <div className="ia-resultado explicacion">
-            <h3>🤖 Explicación Detallada con IA</h3>
-            <div className="ia-texto">
-              <p style={{ whiteSpace: 'pre-line' }}>{explicacionIA}</p>
-            </div>
           </div>
-        )}
-
-        {/* Ejemplos IA */}
-        {ejemplosIA && (
-          <div className="ia-resultado ejemplos">
-            <h3>💡 Ejemplos Generados con IA</h3>
-            <div className="ia-texto codigo">
-              <pre>{ejemplosIA}</pre>
-            </div>
-          </div>
-        )}
-
-        {/* Botones de Cuestionario */}
-        <div className="cuestionario-actions">
-          <h2>🎯 Ahora Practica lo Aprendido</h2>
-          
-          <div className="botones-cuestionario">
-            <div className="opcion-cuestionario">
-              <h3>🤖 Cuestionario con IA</h3>
-              <p>Preguntas generadas dinámicamente por inteligencia artificial</p>
-              <button 
-                onClick={handleCuestionarioIA}
-                className="btn-cuestionario ia-btn"
-              >
-                Generar Cuestionario con IA ✨
-              </button>
-            </div>
-
-            <div className="opcion-cuestionario">
-              <h3>📝 Cuestionario Normal</h3>
-              <p>Preguntas predefinidas de la base de datos</p>
-              <button 
-                onClick={handleCuestionarioNormal}
-                className="btn-cuestionario normal-btn"
-              >
-                Empezar Cuestionario Normal
-              </button>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

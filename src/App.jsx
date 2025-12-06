@@ -38,9 +38,9 @@ const PrivateRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-// Componente para rutas públicas (solo si NO está autenticado)
+
 const PublicRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
@@ -50,7 +50,16 @@ const PublicRoute = ({ children }) => {
     );
   }
 
-  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  if (!isAuthenticated) {
+    return children;
+  }
+
+  // Si está autenticado, redirigir según rol
+  if (user?.rol === 'ADMINISTRADOR') {
+    return <Navigate to="/admin" />;
+  }
+  
+  return <Navigate to="/dashboard" />;
 };
 
 // Componente para rutas de ADMIN

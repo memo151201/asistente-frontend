@@ -1,7 +1,7 @@
 // src/pages/Dashboard.jsx
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import apiService from '../services/apiService';
 import './Pages.css';
@@ -11,6 +11,11 @@ const Dashboard = () => {
   const [materias, setMaterias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // ✅ REDIRIGIR ADMIN AL PANEL DE ADMINISTRACIÓN
+  if (user?.rol === 'ADMINISTRADOR') {
+    return <Navigate to="/admin" replace />;
+  }
 
   useEffect(() => {
     loadMaterias();

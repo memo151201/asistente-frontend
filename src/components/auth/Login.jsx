@@ -15,19 +15,25 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+  e.preventDefault();
+  setError('');
+  setLoading(true);
 
-    try {
-      await login(email, password);
+  try {
+    const userData = await login(email, password);
+    
+    // Redirigir según el rol del usuario
+    if (userData.rol === 'ADMINISTRADOR') {
+      navigate('/admin');
+    } else {
       navigate('/dashboard');
-    } catch (err) {
-      setError(err.message || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err) {
+    setError(err.message || 'Error al iniciar sesión');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="auth-container">

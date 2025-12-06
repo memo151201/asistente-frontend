@@ -32,10 +32,12 @@ const AdminDashboard = () => {
   });
 
   const [cargando, setCargando] = useState(true);
+  const [estudiantesStats, setEstudiantesStats] = useState([]); 
 
-  useEffect(() => {
-    cargarEstadisticas();
-  }, []);
+useEffect(() => {
+  cargarEstadisticas();
+  cargarEstadisticasEstudiantes();  // ← AGREGAR ESTA LÍNEA
+}, []);
 
   const cargarEstadisticas = async () => {
     setCargando(true);
@@ -65,7 +67,15 @@ const AdminDashboard = () => {
       setCargando(false);
     }
   };
-
+// ← AGREGAR ESTA FUNCIÓN
+const cargarEstadisticasEstudiantes = async () => {
+  try {
+    const response = await apiService.getEstadisticasEstudiantes();
+    setEstudiantesStats(response.data);
+  } catch (error) {
+    console.error('Error al cargar estadísticas de estudiantes:', error);
+  }
+};
   // Colores para los gráficos
   const COLORES = ['#4A90E2', '#7B68EE', '#50C878', '#FF6B6B', '#FFA500', '#FF1493', '#20B2AA'];
 
@@ -315,6 +325,86 @@ const AdminDashboard = () => {
               </AreaChart>
             </ResponsiveContainer>
           </div>
+        </div>
+      </div>
+       {/* RESULTADOS DE ESTUDIANTES */}
+      <div className="resultados-section">
+        <h2>📝 Resultados de Estudiantes</h2>
+        <p className="section-subtitle">Desempeño en preguntas y ejercicios evaluados por IA</p>
+        
+        <div className="resultados-grid">
+          {estudiantesStats.length === 0 ? (
+            <div className="no-data">
+              <p>Aún no hay resultados de estudiantes</p>
+            </div>
+          ) : (
+            estudiantesStats.map((estudiante) => (
+              <div key={estudiante.usuarioId} className="resultado-card">
+                <div className="resultado-header">
+                  <div className="estudiante-avatar">
+                    {estudiante.nombreCompleto.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="estudiante-info">
+                    <h3>{estudiante.nombreCompleto}</h3>
+                    <p className="estudiante-email">{estudiante.email}</p>
+                  </div>
+                </div>
+                
+                <div className="resultado-stats">
+                  <div className="stat-item">
+                    <div className="stat-icono">📋</div>
+                    <div className="stat-data">
+                      <span className="stat-numero">{estudiante.totalPreguntas || 0}</span>
+                      <span className="stat-label">Preguntas</span>
+                    </div>
+                  </div>
+                  
+                  <div className="stat-item">
+                    <div className="stat-icono">✅</div>
+                    <div className="stat-data">
+                      <span className="stat-numero correctas">{estudiante.preguntasCorrectas || 0}</span>
+                      <span className="stat-label">Correctas</span>
+                    </div>
+                  </div>
+                  
+                  <div className="stat-item">
+                    <div className="stat-icono">💪</div>
+                    <div className="stat-data">
+                      <span className="stat-numero">{estudiante.totalEjercicios || 0}</span>
+                      <span className="stat-label">Ejercicios</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="resultado-porcentaje">
+                  <div className="porcentaje-label">
+                    Porcentaje de aciertos
+                  </div>
+                  <div className="porcentaje-bar">
+                    <div 
+                      className="porcentaje-fill" 
+                      style={{ 
+                        width: `${estudiante.porcentajeAciertos || 0}%`,
+                        background: estudiante.porcentajeAciertos >= 70 
+                          ? 'linear-gradient(90deg, #50C878 0%, #43e97b 100%)'
+                          : estudiante.porcentajeAciertos >= 50
+                          ? 'linear-gradient(90deg, #FFA500 0%, #FFD700 100%)'
+                          : 'linear-gradient(90deg, #FF6B6B 0%, #FF8E8E 100%)'
+                      }}
+                    >
+                      <span>{(estudiante.porcentajeAciertos || 0).toFixed(1)}%</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="resultado-footer">
+                  <span className="puntuacion-total">
+                    💯 Puntuación: {estudiante.puntuacionTotal || 0} pts
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

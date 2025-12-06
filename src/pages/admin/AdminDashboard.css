@@ -1034,3 +1034,170 @@
   color: #7f8c8d;
   font-weight: 500;
 }
+/* ========== RESULTADOS DE ESTUDIANTES ========== */
+.resultados-section {
+  margin-top: 40px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.section-subtitle {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.resultados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.resultado-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.resultado-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.resultado-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.estudiante-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.estudiante-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.estudiante-email {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.resultado-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-icono {
+  font-size: 24px;
+}
+
+.stat-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-numero {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-numero.correctas {
+  color: #50C878;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.resultado-porcentaje {
+  margin-bottom: 16px;
+}
+
+.porcentaje-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.porcentaje-bar {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  height: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.porcentaje-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  transition: width 0.5s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.porcentaje-fill span {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.resultado-footer {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.puntuacion-total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4A90E2;
+}
+
+.no-data {
+  text-align: center;
+  padding: 60px;
+  color: #999;
+  font-style: italic;
+  grid-column: 1 / -1;
+}

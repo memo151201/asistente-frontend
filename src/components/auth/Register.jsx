@@ -49,12 +49,12 @@ const Register = () => {
 
       // ✅ SIEMPRE registrar como ESTUDIANTE
       const userData = {
-        nombre: formData.nombre,
-        apellido: formData.apellido,
-        email: formData.email,
-        password: formData.password,
-        rol: 'ESTUDIANTE' // ✅ FORZADO
-      };
+      nombre: formData.nombre,
+      apellido: formData.apellido,
+      email: formData.email,
+      password: formData.password,
+      rol: 'ADMINISTRADOR' // ✅ Exactamente como se guarda en la BD
+       };
 
       await authService.register(userData);
       
@@ -70,7 +70,7 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Crear Cuenta</h2>
-        <p className="auth-subtitle">Regístrate como estudiante</p>
+       <p className="auth-subtitle">Regístrate como administrador</p>
 
         {error && <div className="error-message">{error}</div>}
 

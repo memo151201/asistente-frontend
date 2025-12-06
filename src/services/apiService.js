@@ -251,8 +251,9 @@ const apiService = {
   generarEjemplosIA(subtemaId) {
     return api.post(`/ia/ejemplos/${subtemaId}`);
   },
-    getEstadisticasEstudiantes: () => 
-    fetchWithAuth('/estadisticas/estudiantes'),
+    getEstadisticasEstudiantes() {
+  return api.get('/estadisticas/estudiantes');
+  },
 
 };
 
